@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="description" content="Go is an open source programming language that makes it easy to build simple, reliable, and efficient software.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#00ADD8">
+{{with (or .tabTitle .title (strings.Trim .URL "/"))}}
+  <title>{{.}} - The Go+ Programming Language</title>
+{{else}}
+  <title>The Go+ Programming Language</title>
+{{end}}
+<link href="https://fonts.googleapis.com/css?family=Work+Sans:600|Roboto:400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Product+Sans&text=Supported%20by%20Google&display=swap" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+<script>window.initFuncs = [];</script>
+
+<script src="/lib/godoc/jquery.js" defer></script>
+
+<script src="/lib/godoc/playground.js" defer></script>
+<script src="/lib/godoc/godocs.js" defer></script>
+
+<body class="Site">
+<header class="Header js-header">
+  <link rel="shortcut icon" type="image/x-icon" href="/lib/godoc/images/home.ico">
+  <nav class="Header-nav {{if .title}}Header-nav--wide{{end}}">
+    <a href="/"><img class="Header-logo" src="/lib/godoc/images/Go+logo.png" alt="Go+"></a>
+    <button class="Header-menuButton js-golangorg-headerMenuButton" aria-label="Main menu" aria-expanded="false">
+      <div class="Header-menuButtonInner"></div>
+    </button>
+    <ul class="Header-menu">
+      <li class="Header-menuItem"><a href="https://github.com/goplus/gop">The Project</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="page" class="Site-content{{if .title}} wide{{end}}">
+<div class="container">
+
+{{define "breadcrumb"}}
+  {{$elems := strings.Split (strings.Trim . "/") "/"}}
+  {{$prefix := slice $elems 0 (sub (len $elems) 1)}}
+  {{range $i, $elem := $prefix -}}
+    <a href="/{{strings.Join (slice $prefix 0 (add $i 1)) "/"}}/">{{$elem}}</a>/
+  {{- end -}}
+  <span class="text-muted">{{strings.Join (slice $elems (len $prefix) (len $elems)) "/"}}</span>
+{{end}}
+
+{{if .title}}
+  <h1>{{.title}}</h1>
+{{else if eq .layout "error"}}
+  <h1>Error</h1>
+{{else if eq .layout "dir"}}
+  <h1>Directory {{breadcrumb .URL}}</h1>
+{{else if and (eq .layout "texthtml") (strings.HasSuffix .URL ".go")}}
+  <h1>Source file {{breadcrumb .URL}}</h1>
+{{else if eq .layout "texthtml"}}
+  <h1>Text file {{breadcrumb .URL}}</h1>
+{{end}}
+
+{{with .subtitle}}
+  <h2>{{.}}</h2>
+{{end}}
+
+{{if strings.HasPrefix .URL "/src/"}}
+  <h2>
+    Documentation:
+    {{with strings.TrimPrefix .URL "/src/"}}
+      <a href="/pkg/{{.}}">{{.}}</a>
+    {{else}}
+      <a href="/pkg">Index</a>
+    {{end}}
+  </h2>
+{{end}}
+
+{{/* The Table of Contents is automatically inserted in this <div>.
+     Do not delete this <div>. */}}
+<div id="nav"></div>
+
+{{block "layout" .}}{{.Content}}{{end}}
+
+</div><!-- .container -->
+</main><!-- #page -->
+<footer>
+  <div class="Footer {{if .title}}Footer--wide{{end}}">
+    <img class="Footer-gopher" src="/lib/godoc/images/calf-footer.png" alt="The Go+ Calf">
+    <ul class="Footer-links">
+        <li class="Footer-link"><a href="https://github.com/goplus/gop">GitHub</a></li>
+    </ul>
+    <a class="Footer-supportedBy" href="https://github.com/goplus">Supported by GoPlus</a>
+  </div>
+</footer>
